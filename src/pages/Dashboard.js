@@ -1,39 +1,150 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Ionicons name="md-checkmark-circle" size={32} color="green" />
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+const { width, height } = Dimensions.get("window");
 
 const Dashboard = () => {
+  // set data
+  const [error, setError] = useState(false);
+  const [data, setData] = useState([]);
+
+  async function fetchData() {
+    try {
+      const res = await Axios.get(
+        "https://jsonplaceholder.typicode.com/todos/2"
+      );
+      setData(res.data);
+    } catch (error) {
+      setError(error.response.data);
+      alert(error.toString());
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  });
+
+  // console.log(data);
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <>
+      <ScrollView style={styles.container}>
+        {/* header */}
+        <View style={[styles.row, { paddingHorizontal: 15 }]}>
+          <View
+            style={{
+              flex: 1,
+              height: 70,
+              justifyContent: "center",
+            }}
+          >
+            <View>
+              <View style={styles.row}>
+                <Text style={{ color: "#606060", fontSize: 18 }}>Hai, </Text>
+                <Text
+                  style={{ color: "#606060", fontWeight: "bold", fontSize: 18 }}
+                >
+                  Admin
+                </Text>
+              </View>
+              <Text style={{ fontSize: 12, color: "#C4C4C4" }}>123123123</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: "#425E9A",
+              width: 70,
+              height: 70,
+              borderRadius: 50,
+            }}
+          ></View>
+        </View>
+        {/* end header */}
+
+        {/* card info */}
+        <View style={[styles.row, { paddingHorizontal: 15, marginTop: 20 }]}>
+          <View
+            style={{
+              backgroundColor: "#425E9A",
+              flex: 1,
+              borderRadius: 10,
+            }}
+          >
+            <View style={[styles.row, { alignItems: "center" }]}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 100,
+                }}
+              >
+                <Text style={{ fontSize: 14, color: "#fff" }}>Jam Masuk</Text>
+                <Text
+                  style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}
+                >
+                  07:00
+                </Text>
+              </View>
+              <View style={{ height: 80, width: 1, backgroundColor: "#fff" }} />
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 100,
+                }}
+              >
+                <Text style={{ fontSize: 14, color: "#fff" }}>Jam Pulang</Text>
+                <Text
+                  style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}
+                >
+                  16:00
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        {/* end card info */}
+        {/* card History */}
+
+        <Text
+          style={{
+            marginVertical: 20,
+            marginHorizontal: 15,
+            fontSize: 18,
+            fontWeight: "bold",
+            color: "#606060",
+          }}
+        >
+          Riwayat
+        </Text>
+        <View style={[styles.row, { paddingHorizontal: 15 }]}>
+          <View style={{ backgroundColor: "red", height: 100, flex: 1 }}></View>
+        </View>
+        {/* End card History */}
+      </ScrollView>
+    </>
   );
 };
 
 export default Dashboard;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    paddingTop: 50,
+    height: height,
+  },
+  row: {
+    flexDirection: "row",
+  },
+  card: {
+    backgroundColor: "red",
+    height: 100,
+    width: 200,
+  },
+});
