@@ -1,6 +1,15 @@
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Image,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+
+import UserAvatar from "../assets/images/user-avatar.png";
 
 const { width, height } = Dimensions.get("window");
 
@@ -31,7 +40,15 @@ const Dashboard = () => {
     <>
       <ScrollView style={styles.container}>
         {/* header */}
-        <View style={[styles.row, { paddingHorizontal: 15 }]}>
+        <View
+          style={[
+            styles.row,
+            {
+              paddingHorizontal: 15,
+              alignItems: "center",
+            },
+          ]}
+        >
           <View
             style={{
               flex: 1,
@@ -54,11 +71,13 @@ const Dashboard = () => {
           <View
             style={{
               backgroundColor: "#425E9A",
-              width: 70,
-              height: 70,
+              width: 50,
+              height: 50,
               borderRadius: 50,
             }}
-          ></View>
+          >
+            <Image source={UserAvatar} style={{ height: 50, width: 50 }} />
+          </View>
         </View>
         {/* end header */}
 
