@@ -23,6 +23,11 @@ function MyStack() {
         component={Dashboard}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Scanner"
+        component={Scanner}
+        options={{ headerShown: true }}
+      />
     </Stack.Navigator>
   );
 }

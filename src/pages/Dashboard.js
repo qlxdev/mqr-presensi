@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
@@ -14,7 +15,7 @@ import UserAvatar from "../assets/images/user-avatar.png";
 
 const { width, height } = Dimensions.get("window");
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
   // set data
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
@@ -138,7 +139,7 @@ const Dashboard = () => {
         {/* end card info */}
         {/* card History */}
 
-        <Text
+        {/* <Text
           style={{
             marginVertical: 20,
             marginHorizontal: 15,
@@ -147,12 +148,32 @@ const Dashboard = () => {
             color: "#606060",
           }}
         >
-          Riwayat
-        </Text>
-        <View style={[styles.row, { paddingHorizontal: 15 }]}>
+          Riwayat */}
+        {/* </Text> */}
+        {/* <View style={[styles.row, { paddingHorizontal: 15 }]}>
           <View style={{ backgroundColor: "red", height: 100, flex: 1 }}></View>
-        </View>
+        </View> */}
         {/* End card History */}
+
+        <View
+          style={{
+            height: 200,
+            flex: 1,
+            // backgroundColor: "red",
+            marginVertical: 40,
+            marginHorizontal: 15,
+            borderRadius: 10,
+            borderColor: "#425E9A",
+            borderWidth: 1,
+            borderStyle: "dashed",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("Scanner")}>
+            <Text>Scan QRcode</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </>
   );
