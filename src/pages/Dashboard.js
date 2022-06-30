@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import UserAvatar from "../assets/images/user-avatar.png";
 
@@ -18,21 +19,30 @@ const Dashboard = () => {
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
 
-  async function fetchData() {
-    try {
-      const res = await Axios.get(
-        "https://jsonplaceholder.typicode.com/todos/2"
-      );
-      setData(res.data);
-    } catch (error) {
-      setError(error.response.data);
-      alert(error.toString());
-    }
-  }
+  const [nama, setNama] = useState("");
+  const [nip, setNip] = useState("");
 
-  useEffect(() => {
-    fetchData();
+  AsyncStorage.getItem("user", (error, result) => {
+    if (result) {
+      let user = JSON.parse(result);
+      setNama(user.nama);
+      setNip(user.nip);
+    }
   });
+
+  // async function fetchData() {
+  //   try {
+  //     const json = AsyncStorage.getItem("token");
+  //     console.log(json);
+  //   } catch (error) {
+  //     setError(error.response.data);
+  //     alert(error.toString());
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   // console.log(data);
 
@@ -62,10 +72,10 @@ const Dashboard = () => {
                 <Text
                   style={{ color: "#606060", fontWeight: "bold", fontSize: 18 }}
                 >
-                  Admin
+                  {nama}
                 </Text>
               </View>
-              <Text style={{ fontSize: 12, color: "#C4C4C4" }}>123123123</Text>
+              <Text style={{ fontSize: 12, color: "#C4C4C4" }}>{nip}</Text>
             </View>
           </View>
           <View
