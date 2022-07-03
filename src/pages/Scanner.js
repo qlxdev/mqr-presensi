@@ -15,6 +15,26 @@ export default function App({ navigation }) {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
+    const API_URL = "https://yogaputrautama.my.id/api/qrcode/v1/presensi";
+    Axios.post(API_URL, {
+      qr_code: data,
+    })
+      .then((response) => {
+        // if (response.data == "") {
+        //   Alert.alert("NIP / Password salah!");
+        // } else {
+        //   try {
+        //     AsyncStorage.setItem("user", JSON.stringify(response.data.data));
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        //   navigation.navigate("Dashboard");
+        // }
+      })
+      .catch(function (error) {
+        Alert.alert(error);
+      });
+
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
@@ -28,7 +48,6 @@ export default function App({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: "#ffffff" }}>Back</Text>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={{

@@ -1,31 +1,21 @@
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
   Dimensions,
-  Image,
-  TouchableOpacity,
   FlatList,
   ActivityIndicator,
-  Alert,
-  LogBox,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-import IconNotif from "../assets/images/notification.png";
-import IconHome from "../assets/images/home.png";
-import IconScan from "../assets/images/scan.png";
-import IconProfile from "../assets/images/profile.png";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
-const Dashboard = ({ navigation }) => {
-  // set data
-  const [error, setError] = useState(false);
+const History = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -49,7 +39,7 @@ const Dashboard = ({ navigation }) => {
     };
     Axios.get(API_URL, { headers })
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setData(response.data);
         setLoading(false);
       })
@@ -57,13 +47,6 @@ const Dashboard = ({ navigation }) => {
         Alert.alert(error);
       });
   }
-
-  useEffect(() => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-    fetchData();
-  }, []);
-
-  // console.log(data);
 
   const RenderItem = ({ item }) => {
     if (item.status == 1) {
@@ -239,6 +222,11 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    // LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+    fetchData();
+  }, []);
+
   if (loading) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
@@ -248,175 +236,28 @@ const Dashboard = ({ navigation }) => {
   }
 
   return (
-    <>
-      <ScrollView style={styles.container}>
-        {/* header */}
-        <View
-          style={[
-            styles.row,
-            {
-              paddingHorizontal: 15,
-              alignItems: "center",
-            },
-          ]}
-        >
-          <View
-            style={{
-              flex: 1,
-              height: 70,
-              justifyContent: "center",
-            }}
-          >
-            <View>
-              <View style={styles.row}>
-                <Text style={{ color: "#606060", fontSize: 18 }}>Hai, </Text>
-                <Text
-                  style={{ color: "#606060", fontWeight: "bold", fontSize: 18 }}
-                >
-                  {nama}
-                </Text>
-              </View>
-              <Text style={{ fontSize: 12, color: "#C4C4C4" }}>{nip}</Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Notification")}
-            style={{
-              // backgroundColor: "#425E9A",
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-            }}
-          >
-            <Image source={IconNotif} style={{ height: 30, width: 30 }} />
-          </TouchableOpacity>
-        </View>
-        {/* end header */}
-
-        {/* card info */}
-        <View style={[styles.row, { paddingHorizontal: 15, marginTop: 20 }]}>
-          <View
-            style={{
-              backgroundColor: "#425E9A",
-              flex: 1,
-              borderRadius: 10,
-            }}
-          >
-            <View style={[styles.row, { alignItems: "center" }]}>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 100,
-                }}
-              >
-                <Text style={{ fontSize: 14, color: "#fff" }}>Jam Masuk</Text>
-                <Text
-                  style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}
-                >
-                  07:00
-                </Text>
-              </View>
-              <View style={{ height: 80, width: 1, backgroundColor: "#fff" }} />
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 100,
-                }}
-              >
-                <Text style={{ fontSize: 14, color: "#fff" }}>Jam Pulang</Text>
-                <Text
-                  style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}
-                >
-                  15:00
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        {/* end card info */}
-        {/* card History */}
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingHorizontal: 15,
-            marginVertical: 20,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-              color: "#606060",
-            }}
-          >
-            Riwayat
-          </Text>
-
-          <Text onPress={() => navigation.navigate("History")}>Lihat >></Text>
-        </View>
-        {/* Item */}
-        <FlatList
-          data={data}
-          keyExtractor={(item, index) => `key-${index}`}
-          renderItem={({ item }) => (
-            <>
-              <RenderItem item={item} />
-            </>
-          )}
-        />
-        {/* end item */}
-
-        <View style={{ height: 50 }} />
-        {/* End card History */}
-      </ScrollView>
-
-      <View
-        style={{
-          height: 60,
-          width: "100%",
-          backgroundColor: "#fff",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Dashboard")}
-          style={{ flex: 1, alignItems: "center" }}
-        >
-          <Image source={IconHome} style={{ height: 30, width: 30 }} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Scanner")}
-          style={{ flex: 1, alignItems: "center" }}
-        >
-          <Image source={IconScan} style={{ height: 30, width: 30 }} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
-          style={{ flex: 1, alignItems: "center" }}
-        >
-          <Image source={IconProfile} style={{ height: 30, width: 30 }} />
-        </TouchableOpacity>
-      </View>
-    </>
+    <SafeAreaView>
+      <FlatList
+        data={data}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }, index) => (
+          <>
+            <RenderItem item={item} key={index} />
+          </>
+        )}
+      />
+    </SafeAreaView>
   );
 };
 
-export default Dashboard;
+export default History;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
-    paddingTop: 50,
+    paddingTop: 0,
     height: height,
   },
   row: {

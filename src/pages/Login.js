@@ -19,26 +19,30 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const { height } = Dimensions.get("window");
 
 const Login = ({ navigation }) => {
-  const [nip, setNip] = React.useState("195712101982111001");
-  const [password, setPassword] = React.useState("19571");
+  const [nip, setNip] = React.useState("196601072014082001");
+  const [password, setPassword] = React.useState("196601072014082001");
 
-  const doUserLogin = async function () {
-    const API_URL = "https://muzayin.my.id/api/qrcode/v1/login";
-    return Axios.post(API_URL, {
-      username: nip,
+  const doUserLogin = () => {
+    const API_URL = "https://yogaputrautama.my.id/api/qrcode/v1/login";
+    Axios.post(API_URL, {
+      nip: nip,
       password: password,
-    }).then((response) => {
-      if (response.data == "") {
-        Alert.alert("NIP / Password salah!");
-      } else {
-        try {
-          AsyncStorage.setItem("user", JSON.stringify(response.data));
-        } catch (error) {
-          console.log(error);
+    })
+      .then((response) => {
+        if (response.data == "") {
+          Alert.alert("NIP / Password salah!");
+        } else {
+          try {
+            AsyncStorage.setItem("user", JSON.stringify(response.data.data));
+          } catch (error) {
+            console.log(error);
+          }
+          navigation.navigate("Dashboard");
         }
-        navigation.navigate("Dashboard");
-      }
-    });
+      })
+      .catch(function (error) {
+        Alert.alert(error);
+      });
   };
 
   return (
